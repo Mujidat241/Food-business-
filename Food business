@@ -1,0 +1,73 @@
+class FoodBusiness:
+    def __init__(self):
+        self.menu = {}  # Menu with item name as key and price as value
+        self.inventory = {}  # Inventory with item name as key and quantity as value
+        self.sales = 0  # Total sales
+
+    def add_item_to_menu(self, item, price):
+        self.menu[item] = price
+        print(f"{item} added to the menu at ${price:.2f}.")
+
+    def update_inventory(self, item, quantity):
+        if item in self.inventory:
+            self.inventory[item] += quantity
+        else:
+            self.inventory[item] = quantity
+        print(f"{quantity} units of {item} added to inventory.")
+
+    def display_menu(self):
+        print("\nMenu:")
+        for item, price in self.menu.items():
+            print(f"{item}: ${price:.2f}")
+        print()
+
+    def display_inventory(self):
+        print("\nInventory:")
+        for item, quantity in self.inventory.items():
+            print(f"{item}: {quantity} units")
+        print()
+
+    def process_order(self, item, quantity):
+        if item not in self.menu:
+            print(f"Sorry, {item} is not on the menu.")
+            return
+
+        if self.inventory.get(item, 0) < quantity:
+            print(f"Sorry, insufficient {item} in inventory.")
+            return
+
+        total_cost = self.menu[item] * quantity
+        self.inventory[item] -= quantity
+        self.sales += total_cost
+        print(f"Order successful! {quantity} {item}(s) sold for ${total_cost:.2f}.")
+
+    def display_sales(self):
+        print(f"\nTotal Sales: ${self.sales:.2f}\n")
+
+
+# Example Usage
+if __name__ == "__main__":
+    business = FoodBusiness()
+
+    # Add items to menu
+    business.add_item_to_menu("Burger", 5.99)
+    business.add_item_to_menu("Fries", 2.99)
+    business.add_item_to_menu("Soda", 1.49)
+
+    # Update inventory
+    business.update_inventory("Burger", 50)
+    business.update_inventory("Fries", 100)
+    business.update_inventory("Soda", 200)
+
+    # Display menu and inventory
+    business.display_menu()
+    business.display_inventory()
+
+    # Process orders
+    business.process_order("Burger", 2)
+    business.process_order("Fries", 3)
+    business.process_order("Soda", 1)
+
+    # Display sales and remaining inventory
+    business.display_sales()
+    business.display_inventory()
